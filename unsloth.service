@@ -10,11 +10,11 @@ After=network.target
 # The working directory.
 # This should be set to wherever you want to run the task.
 # This is typically the directory where the executable lives.
-WorkingDirectory=/home/eligu
+WorkingDirectory=/home/$USER
 
 # The user and group you want to run this command as.
 # Typically, I run commands as my own user (ubuntu) to simplify permissions.
-User=eligu
+User=$USER
 
 # This line ensures the program restarts on its own in case the process crashes.
 Restart=always
@@ -25,7 +25,7 @@ Restart=always
 # After that is the command itself.
 ExecStartPre=/bin/sleep 30
 # In this case, we run a bash script in the working directory.
-ExecStart=/bin/bash -l -c '/home/eligu/.local/bin/unsloth studio --host 172.17.0.1 -p 8888'
+ExecStart=/bin/bash -l -c '/home/$USER/.local/bin/unsloth studio --host 172.17.0.1 -p 8888'
 
 [Install]
 # The run level.
