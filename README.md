@@ -20,7 +20,7 @@ curl -fsSL https://unsloth.ai/install.sh | sh
 ```
 
 
-## Hermes Agent Setup
+## Hermes setup
 
 ```bash
 mkdir -p ~/.hermes
@@ -62,7 +62,7 @@ mcp_servers:
       Authorization: "Bearer ${N8N_MCP_TOKEN}"
 ```
 
-## Fix ddgs Install Failure
+## Fix ddgs install failure
 
 ```bash
 sudo docker exec -it hermes /opt/data/bin/uv pip install -U ddgs --python /opt/hermes/.venv/bin/python3
