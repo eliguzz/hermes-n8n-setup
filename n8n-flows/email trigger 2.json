@@ -1,0 +1,125 @@
+{
+  "name": "email trigger 2",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8642/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpCustomAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"hermes-agent\",\n  \"messages\": [\n{\"role\": \"system\", \"content\": \"{{ $json.system }}\"},\n{\"role\": \"user\", \"content\": \"{{ $json.user }}\"}\n],\n  \"stream\": false\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        256,
+        0
+      ],
+      "id": "c26a5ab9-56df-4d08-a345-2ef0891193e1",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpCustomAuth": {
+          "id": "LDITuiKr7m1m75WO",
+          "name": "Custom Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "maxResults": 1,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -192,
+        0
+      ],
+      "id": "5efc5893-d5c9-4a76-9f53-e23031423ee4",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "O8AHomVhCy9XbazM",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b270d34e-6343-4372-a400-8fd312b5c2ec",
+              "name": "system",
+              "value": "Analyze the incoming email, determine if it is urgent, if it is notify me via photon by running this /opt/hermes/bin/hermes send --to photon \\\"HERMES MESSAGE HERE\\\"",
+              "type": "string"
+            },
+            {
+              "id": "db783fae-69b4-489d-8f56-dba766704f54",
+              "name": "user",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        32,
+        0
+      ],
+      "id": "2e26abe5-6d25-4d95-b41f-248058480450",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "2e80e0b9-9e52-4a0f-bbbc-85d20d14c0e9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cb154ec11ca7b6203ac9f847de6c8693e4ebf3e29268d53eb659c7b655913b1d"
+  },
+  "nodeGroups": [],
+  "id": "Bw9CVHMYPtBQiyti",
+  "tags": []
+}

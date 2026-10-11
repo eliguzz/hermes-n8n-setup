@@ -1,0 +1,311 @@
+{
+  "name": "mcp tools",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "bearerAuth",
+        "path": "db6e1869-d2d0-45ee-bdcd-c805e0cc49f5"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2.1,
+      "position": [
+        -480,
+        -16
+      ],
+      "id": "19570b5a-5944-4e42-b419-7c9c826d929b",
+      "name": "MCP Server Trigger",
+      "webhookId": "db6e1869-d2d0-45ee-bdcd-c805e0cc49f5",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ylUudGt7I6bjHUKP",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Get last 5 emails in Gmail inbox.",
+        "workflowId": {
+          "__rl": true,
+          "value": "Oy1v3kcJaPWyOB5x",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Oy1v3kcJaPWyOB5x",
+          "cachedResultName": "get last 5 emails"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -720,
+        208
+      ],
+      "id": "1cf5922d-34f8-4620-bce0-aea4d3ec1113",
+      "name": "Call 'get last 5 emails'"
+    },
+    {
+      "parameters": {
+        "description": "Use the message ID from the get last 5 emails tool to recall the full email information.",
+        "workflowId": {
+          "__rl": true,
+          "value": "995cbFuvunymiCF1",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/995cbFuvunymiCF1",
+          "cachedResultName": "get single email"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('id', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        208
+      ],
+      "id": "14c8c46c-8665-4aa3-bb30-f1be4ab43f45",
+      "name": "Call 'get single email'"
+    },
+    {
+      "parameters": {
+        "description": "Get last 30 email subjects in Gmail inbox. Use this to search for a particular email in question and then use the get single email tool to get more information about it.",
+        "workflowId": {
+          "__rl": true,
+          "value": "Q17YVweNV7NJH76M",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Q17YVweNV7NJH76M",
+          "cachedResultName": "get last 30 email subjects"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        208
+      ],
+      "id": "513fd571-c5c1-49c9-9677-06bda9afa2af",
+      "name": "Call 'get last 30 email subjects'"
+    },
+    {
+      "parameters": {
+        "description": "Get events on calendar from date and time range using this format.\n\n20XX-XX-XXT00:00:00\n\nIncludes recurring events (shows original series start date)\n\nIf \"The workflow did not return a response\" is returned, there are no events for that time frame.",
+        "workflowId": {
+          "__rl": true,
+          "value": "gjErfDpA3GEixozu",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/gjErfDpA3GEixozu",
+          "cachedResultName": "calendar get events"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('start', ``, 'string') }}",
+            "eind": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('eind', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "start",
+              "displayName": "start",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "eind",
+              "displayName": "eind",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -272,
+        224
+      ],
+      "id": "9367f27c-a4e2-4b9c-8e73-6dcef0cc4264",
+      "name": "Call 'calendar'"
+    },
+    {
+      "parameters": {
+        "description": "Create event on calendar from date and time range using this format.\n\n20XX-XX-XXT00:00:00",
+        "workflowId": {
+          "__rl": true,
+          "value": "D4KFLl1QUBiVeclm",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/D4KFLl1QUBiVeclm",
+          "cachedResultName": "calendar create event"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('start', ``, 'string') }}",
+            "eind": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('eind', ``, 'string') }}",
+            "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('title', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "start",
+              "displayName": "start",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "eind",
+              "displayName": "eind",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        224
+      ],
+      "id": "a1293dd2-bf48-456f-ad9b-d093e48e0dfb",
+      "name": "Call 'calendar create event'"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Call 'get last 5 emails'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get single email'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'get last 30 email subjects'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'calendar'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'calendar create event'": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "96ce8ca6-484d-406e-9b45-52a9aa838f5b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cb154ec11ca7b6203ac9f847de6c8693e4ebf3e29268d53eb659c7b655913b1d"
+  },
+  "nodeGroups": [],
+  "id": "0XHoM5M4JNkSLwx1",
+  "tags": []
+}

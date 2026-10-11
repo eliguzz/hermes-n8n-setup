@@ -1,0 +1,82 @@
+{
+  "name": "calendar create event",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "eind"
+            },
+            {
+              "name": "title"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        -240
+      ],
+      "id": "9228a6c7-fe6e-4269-bc93-dab9aa38aaa6",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "operation": "createEvent",
+        "calendarUrl": "https://caldav.icloud.com/10246823609/calendars/work/",
+        "summary": "={{ $json.title }}",
+        "start": "={{ $json.start }}",
+        "end": "={{ $json.eind }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-icloud.iCloud",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -240
+      ],
+      "id": "efddf5a2-c3aa-41bf-b696-14cd6de36ba1",
+      "name": "Create a calendar event in iCloud",
+      "credentials": {
+        "iCloudCredentials": {
+          "id": "J2hOF94hMmLUHOr1",
+          "name": "Apple iCloud Credentials account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Create a calendar event in iCloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "a13eb970-81ce-447f-8b81-8baa9eef62fd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cb154ec11ca7b6203ac9f847de6c8693e4ebf3e29268d53eb659c7b655913b1d"
+  },
+  "nodeGroups": [],
+  "id": "D4KFLl1QUBiVeclm",
+  "tags": []
+}

@@ -1,0 +1,75 @@
+{
+  "name": "calendar get events",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "start"
+            },
+            {
+              "name": "eind"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        -240
+      ],
+      "id": "ec0028a4-d3db-41ae-8210-1eea453bce06",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "start": "={{ $json.start }}",
+        "end": "={{ $json.eind }}"
+      },
+      "type": "n8n-nodes-icloud.iCloud",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -240
+      ],
+      "id": "35263a07-cf1b-4623-9276-c8520877ef0f",
+      "name": "Get calendar events from iCloud",
+      "credentials": {
+        "iCloudCredentials": {
+          "id": "J2hOF94hMmLUHOr1",
+          "name": "Apple iCloud Credentials account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get calendar events from iCloud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "fff8831e-f877-4ffc-93d4-4cf4f85e7fe8",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cb154ec11ca7b6203ac9f847de6c8693e4ebf3e29268d53eb659c7b655913b1d"
+  },
+  "nodeGroups": [],
+  "id": "gjErfDpA3GEixozu",
+  "tags": []
+}

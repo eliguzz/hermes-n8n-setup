@@ -1,0 +1,190 @@
+{
+  "name": "get last 5 emails",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        0
+      ],
+      "id": "8f37720a-f069-4af8-875e-aaec7421081d",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "dd0405ea-d59a-4679-b6f0-9231f9204720",
+      "name": "Get many messages",
+      "webhookId": "cde5afc8-77ce-44f3-8953-b641ba666308",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "O8AHomVhCy9XbazM",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b261be6-65f6-49f4-8eb3-ef6cb74a9bc9",
+              "name": "id",
+              "value": "={{ $('Get many messages').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "f954c168-fe5b-4a5f-9a56-085db4dccd1e",
+              "name": "date",
+              "value": "={{ $('Get many messages').item.json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "b4eed1a9-bbb3-4e12-b178-68b709163ae7",
+              "name": "from",
+              "value": "={{ $('Get many messages').item.json.from.value[0].address }}",
+              "type": "string"
+            },
+            {
+              "id": "26a989ec-2a2d-491f-a001-b8238ddfd8c7",
+              "name": "subject",
+              "value": "={{ $('Get many messages').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "7a8d61d7-2b33-45e2-822f-0b9dfb19dd19",
+              "name": "html",
+              "value": "={{ $json.clean_text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        592,
+        0
+      ],
+      "id": "589a00f0-477c-4340-88af-27cee51fd9a4",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "html",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "extracted_text",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        0
+      ],
+      "id": "e0ffc2ab-307a-4fc6-975d-d8f188007ab1",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  // Use 'extracted_text' or whatever variable your previous HTML node outputs\n  let text = item.json.extracted_text || '';\n\n  // 1. ELIMINATE INVISIBLE SPACER/PREVIEW CHARACTERS\n  // Targets specific hidden Unicode strings (Zero-width spaces, soft hyphens, figure spaces)\n  text = text.replace(/[\\u2007\\u034f\\u00ad\\u200b\\u200c\\u200d\\ufeff]/g, '');\n\n  // 2. STRIP BRACKETED URLS (e.g., [https://...])\n  text = text.replace(/\\[https?:\\/\\/[^\\]]+\\]/gi, '');\n\n  // 3. STRIP STANDALONE NAKED URLS (e.g., https://microcenter-cdn...)\n  // This matches standard web links dropped on their own line or inside spaces\n  text = text.replace(/https?:\\/\\/[^\\s]+/gi, '');\n\n  // 4. CLEAN UP LEFTOVER BRACKET ARTIFACTS\n  // Wipes out any hanging empty pairs \"[]\" or lines with just an arrow symbol left behind\n  text = text.replace(/\\[\\s*\\]/g, '');\n  text = text.replace(/Click here»|Unable to see images\\?/gi, '');\n\n  // 5. CONDENSE SPACE AND MULTI-LINE BREAKS\n  // Trims spaces on individual lines, removes empty lines containing only spaces\n  text = text.split('\\n').map(line => line.trim()).join('\\n');\n  // Compresses 3 or more stacked line breaks into a clean double line-break\n  text = text.replace(/\\n{3,}/g, '\\n\\n');\n\n  // Save the truly generic output\n  item.json.clean_text = text.trim();\n}\n\nreturn $input.all();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        368,
+        0
+      ],
+      "id": "2e63567b-7ff6-4378-b8f4-45a2b51af1c0",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4d3dd46d-48d5-4efc-812e-10da9dae3930",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cb154ec11ca7b6203ac9f847de6c8693e4ebf3e29268d53eb659c7b655913b1d"
+  },
+  "nodeGroups": [],
+  "id": "Oy1v3kcJaPWyOB5x",
+  "tags": []
+}

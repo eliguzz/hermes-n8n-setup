@@ -1,0 +1,33 @@
+# /etc/systemd/system/unsloth.service
+
+[Unit]
+# A description used to identify what this service does.
+Description=Run unsloth service
+# Ensures that the service doesn't start until after networking has started.
+After=network.target
+
+[Service]
+# The working directory.
+# This should be set to wherever you want to run the task.
+# This is typically the directory where the executable lives.
+WorkingDirectory=/home/eligu
+
+# The user and group you want to run this command as.
+# Typically, I run commands as my own user (ubuntu) to simplify permissions.
+User=eligu
+
+# This line ensures the program restarts on its own in case the process crashes.
+Restart=always
+
+# The actual command to execute on boot.
+# We create a screen instance called mc.
+# This will alow us to attach to the screen instance if necessary.
+# After that is the command itself.
+ExecStartPre=/bin/sleep 30
+# In this case, we run a bash script in the working directory.
+ExecStart=/bin/bash -l -c '/home/eligu/.local/bin/unsloth studio --host 172.17.0.1 -p 8888'
+
+[Install]
+# The run level.
+# Ensures the process starts at the right part of the boot process.
+WantedBy=multi-user.target
