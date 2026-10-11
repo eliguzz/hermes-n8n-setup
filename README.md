@@ -19,6 +19,11 @@ exec bash
 curl -fsSL https://unsloth.ai/install.sh | sh
 ```
 
+## Docker install stuff
+
+Just go here for the commands. 
+[This is the link to ubuntu install stuff](https://docs.docker.com/engine/install/ubuntu/)
+
 
 ## Hermes setup
 
