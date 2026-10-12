@@ -25,7 +25,7 @@ Restart=always
 # After that is the command itself.
 ExecStartPre=/bin/sleep 30
 # In this case, we run a bash script in the working directory.
-ExecStart=/bin/bash -l -c '/home/$USER/.local/bin/unsloth studio --host 172.17.0.1 -p 8888'
+ExecStart=/bin/bash -l -c '/home/YOURUSERNAME/.local/bin/unsloth studio --host 172.17.0.1 -p 8888'
 
 [Install]
 # The run level.
