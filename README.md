@@ -117,7 +117,13 @@ tailscale serve --https=8888 off
 ## Start unsloth studio on docker0 IP
 
 ```bash
-unsloth studio --host 172.17.0.1 -p 8888
+nohup unsloth studio --host 172.17.0.1 -p 8888 > unsloth.log 2>&1 &
+```
+
+Stop it: 
+
+```bash
+pkill -f "unsloth studio"
 ```
 
 
