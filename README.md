@@ -120,6 +120,11 @@ tailscale serve --https=8888 off
 nohup unsloth studio --host 172.17.0.1 -p 8888 > unsloth.log 2>&1 &
 ```
 
+Start unsloth no gpus
+```bash
+CUDA_VISIBLE_DEVICES="" nohup unsloth studio --host 172.17.0.1 -p 8888 > unsloth.log 2>&1 &
+```
+
 Stop it: 
 
 ```bash
